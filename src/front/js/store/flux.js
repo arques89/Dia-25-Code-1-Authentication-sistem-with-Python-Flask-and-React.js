@@ -14,7 +14,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			user: []
+			
 
 		},
 		actions: {
@@ -37,25 +37,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 
-			getLogin: () => {
+			// getLogin: () => {
 				
-				fetch(process.env.BACKEND_URL + "/api/login")
-				.then(resp => resp.json())
-				.then(data => setStore({user: data}))
-				.catch(error => console.log("Error loading message from backend", error));
+			// 	fetch(process.env.BACKEND_URL + "/api/login")
+			// 	.then(resp => resp.json())
+			// 	.then(data => setStore({user: data}))
+			// 	.catch(error => console.log("Error loading message from backend", error));
 					
 				
-			},
+			// },
 
-			getSignup: () => {
+			// getSignup: () => {
 				
-				fetch(process.env.BACKEND_URL + "/api/signup")
-				.then(resp => resp.json())
-				.then(data => setStore({user: data}))
-				.catch(error => console.log("Error loading message from backend", error));
+			// 	fetch(process.env.BACKEND_URL + "/api/signup")
+			// 	.then(resp => resp.json())
+			// 	.then(data => setStore({user: data}))
+			// 	.catch(error => console.log(error));
 					
 				
-			},
+			// },
 
 			// getMessage: () => {
 				
