@@ -149,3 +149,16 @@ def get_info_usuario():
     if user is None:
         raise APIException("Usuario no encontrado")
     return jsonify(info_user)
+
+#####--------------------BACKEND PRIVATE--------------------#####
+
+# Protege una ruta con jwt_required, bloquea las peticiones
+# sin un JWT válido presente.
+@app.route("/private", methods=["GET"])
+@jwt_required()
+def private():
+    # Accede a la identidad del usuario actual con get_jwt_identity
+    current_user_id = get_jwt_identity()
+    user = User.filter.get(current_user_id)
+    
+    return jsonify({"id": user.id, "username": user.username }), 200

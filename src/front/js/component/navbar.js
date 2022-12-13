@@ -6,10 +6,13 @@ export const Navbar = () => {
 		<nav className="navbar navbar-light bg-light ">
 			<div className="container-fluid">
 			
-				<Link to="/">
+				<Link to="/signup">
 					<span className="navbar-brand mb-0 h1">Signup</span>
 				</Link>
 				<Link to="/">
+					<span className="navbar-brand mb-0 h1">Home</span>
+				</Link>
+				<Link to="/login">
 					<span className="navbar-brand mb-0 h1">Login</span>
 				</Link>
 				
