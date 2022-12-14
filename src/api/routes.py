@@ -92,45 +92,44 @@ def signup():
 
 @api.route('/login', methods=['POST'])
 def login():
-    body = request.get_json()
-    email=body["email"]
-    password=body["password"]
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
    
 
     # if name is None or len(name) < 1:
     #     raise APIException("Has de añadir un nombre", status_code=404)
 
-    user = User.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=email, password=password).first()
 
     # if user.name != name:
     #     raise APIException("Nombre o email incorrecto", status_code=404)
 
 
     if user is None:
-        raise APIException("Email incorrecto", status_code=404)
+        raise APIException("BACKEND LOGIN: Email incorrecto", status_code=401)
 
     if user.password != password:
-        raise APIException("Password incorrecto", status_code=404)
+        raise APIException("BACKEND LOGIN: Password incorrecto", status_code=401)
 
 # me va a codificar el diccionario (todo lo compatible con json), sólo me va almacenar la data (email)
     
     # token
-    data = {
-        "email": user.email,
-        "user_id": user.id
-    }
+    # data = {
+    #     "email": user.email,
+    #     "user_id": user.id
+    # }
     
 #  access_token = create_access_token(identity=username)
 #     return jsonify(access_token=access_token) ????
 
-    token = create_access_token(identity=data)
-    res = {
-        "token": token,
-        "user_id": user.id
+    token = create_access_token(identity=user.id)
+    # res = {
+    #     "token": token,
+    #     "user_id": user.id
 
-    }
-    return jsonify({'message': 'Usuario logeado exitosamente!', 'token': token, 'usuario_id': user.id, 'data': user.serialize()}), 201
-
+    # }
+    # return jsonify({'message': 'Usuario logeado exitosamente!', 'token': token, 'user_id': user.id}), 201
+    return jsonify({ "token": token, "user_id": user.id })
 #oBTENER TOKEN
 def obtener_usuario_id():
     informacion_usuario = get_jwt_identity()
@@ -154,11 +153,13 @@ def get_info_usuario():
 
 # Protege una ruta con jwt_required, bloquea las peticiones
 # sin un JWT válido presente.
-@app.route("/private", methods=["GET"])
+@api.route("/private", methods=["GET"])
 @jwt_required()
 def private():
     # Accede a la identidad del usuario actual con get_jwt_identity
     current_user_id = get_jwt_identity()
-    user = User.filter.get(current_user_id)
+    user = User.query.get(current_user_id)
     
-    return jsonify({"id": user.id, "username": user.username }), 200
+    return jsonify({"id": user.id, "email": user.email }), 200
+
+    

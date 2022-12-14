@@ -1,1 +1,0 @@
-export const url = "https://3001-arques89-dia25code1auth-mtitcj6mspo.ws-eu78.gitpod.io";

@@ -1,40 +1,42 @@
-import React, { useContext, useEffect , useState } from "react";
-import { Context } from "../store/appContext";
-import { url } from "../../../config"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import "../../styles/login.css"
 
 export const Login = () => {
-  const { store, actions } = useContext(Context);
-  const [data, setData] = useState({});
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  let navigate = useNavigate();
+  
 
-  // useEffect(() => {
-   
-  // }, []);
-  const handleChange = (event) => {
-      //console.log(event.target.value)
-    setData({...data , [event.target.name] : event.target.value })
-  }
-
-  const handleSubmit = () => {
-    fetch(`${url}/api/login`,{
+  const handleLogin = () => {
+    fetch(process.env.BACKEND_URL + "/api/login",{
         method: "POST",
+        body: JSON.stringify(),
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(data)
+        body:JSON.stringify({ email: email, password: password })
     })
-    .then(resp => resp.json())
+    .then(response => response.json())
+    .then((response) => {
+      const data = response
+      localStorage.setItem("jwt-token", data.token);
+      navigate("/private") 
 
+      return data
+    })
   }
   return (
     <>
-      <div className="text-center mt-5">
+      <div id="login" className="text-center mt-5">
         <div className="mb-3">
-          <label for="emailId" className="form-label">
+          <label htmlFor="emailId" className="form-label">
             Email
           </label>
           <input
             name="email"
-            onChange={handleChange}
+            onChange={(e)=>{setEmail(e.target.value)}}
             type="email"
             className="form-control"
             id="emailId"
@@ -42,19 +44,19 @@ export const Login = () => {
           />
         </div>
         <div className="mb-3">
-          <label for="passwordId" className="form-label">
+          <label htmlFor="passwordId" className="form-label">
             Password
           </label>
           <input
           name="password"
-          onChange={handleChange}
+          onChange={(e)=>{setPassword(e.target.value)}}
             type="password"
             className="form-control"
             id="passwordId"
             placeholder="Ingrese su contraseña aqui.com"
           />
         </div>
-        <button onClick={handleSubmit}>Acceder</button>
+        <button onClick={handleLogin}>Access</button>
       </div>
     </>
   );

@@ -1,20 +1,20 @@
-import React, { useContext, useEffect , useState } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { url } from "../../../config"
+import { Link } from "react-router-dom";
+
+import "../../styles/signup.css"
+
 export const Signup = () => {
   const { store, actions } = useContext(Context);
   const [data, setData] = useState({});
 
-  // useEffect(() => {
-   
-  // }, []);
   const handleChange = (event) => {
       //console.log(event.target.value)
     setData({...data , [event.target.name] : event.target.value })
   }
 
   const handleSubmit = () => {
-    fetch(`${url}/api/signup`,{
+    fetch(process.env.BACKEND_URL + "/api/signup",{
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -26,9 +26,9 @@ export const Signup = () => {
   }
   return (
     <>
-      <div className="text-center mt-5">
+      <div id="signup" className="text-center mt-5">
         <div className="mb-3">
-          <label for="emailId" className="form-label">
+          <label htmlFor="emailId" className="form-label">
             Email
           </label>
           <input
@@ -41,7 +41,7 @@ export const Signup = () => {
           />
         </div>
         <div className="mb-3">
-          <label for="passwordId" className="form-label">
+          <label htmlFor="passwordId" className="form-label">
             Password
           </label>
           <input
@@ -54,7 +54,7 @@ export const Signup = () => {
           />
         </div>
         <div className="mb-3">
-          <label for="nameId" className="form-label">
+          <label htmlFor="nameId" className="form-label">
             Name
           </label>
           <input
@@ -66,7 +66,9 @@ export const Signup = () => {
             placeholder="Ingrese su nombre aqui"
           />
         </div>
+        <Link to="/login">
         <button onClick={handleSubmit}>Registrar usuario</button>
+        </Link>
       </div>
     </>
   );
